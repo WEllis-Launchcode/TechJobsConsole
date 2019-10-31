@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using System.Text;
 
 namespace TechJobsConsole
@@ -9,6 +8,25 @@ namespace TechJobsConsole
     {
         static List<Dictionary<string, string>> AllJobs = new List<Dictionary<string, string>>();
         static bool IsDataLoaded = false;
+
+        public static List<Dictionary<string, string>> FindByValue(string searchTerm)
+        {
+            LoadData();
+            List<Dictionary<string, string>> jobPost = new List<Dictionary<string, string>>();
+            foreach (Dictionary<string, string> row in AllJobs)
+            {
+                string jobloop = "";
+                foreach (KeyValuePair<string, string> sets in row)
+                {
+                    jobloop += sets.Value.ToLower();
+                }
+                if (jobloop.Contains(searchTerm.ToLower()))
+                {
+                    jobPost.Add(row);
+                }
+            }
+            return jobPost;
+        } 
 
         public static List<Dictionary<string, string>> FindAll()
         {
@@ -49,7 +67,7 @@ namespace TechJobsConsole
             {
                 string aValue = row[column];
 
-                if (aValue.Contains(value))
+                if (aValue.ToLower().Contains(value.ToLower()))
                 {
                     jobs.Add(row);
                 }
